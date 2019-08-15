@@ -18,8 +18,9 @@ const gameBoard = (() => {
     return { cellList };
 })();
 
+
 const protoPlayer = (team, playerClass, status = 'off') => {
-    
+
     const cellsClaimed = [];
     const gridCells = document.querySelectorAll('.grid-cell');
 
@@ -48,3 +49,10 @@ const protoPlayer = (team, playerClass, status = 'off') => {
 
     return { team, cellsClaimed };
 }
+
+const initialPlayers = (() => {
+    const playerX = protoPlayer('X', 'active-x', 'off');
+    const playerO = protoPlayer('O', 'active-o', 'on');
+
+    return { playerX, playerO }
+})()
