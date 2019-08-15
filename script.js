@@ -18,25 +18,38 @@ const gameBoard = (() => {
     return { cellList };
 })();
 
-const protoPlayer = (team, playerClass) => {
-
+const protoPlayer = (team, playerClass, status = 'off') => {
+    
     const cellsClaimed = [];
     const gridCells = document.querySelectorAll('.grid-cell');
-    const status = 'off';
-
-    const displayController = () => {
-        gridCells.forEach(cell => cell.addEventListener('click', (e) => cellsClaimed.push(e.target.id)));
-        gridCells.forEach(cell => cell.addEventListener('click', (e) => e.target.classList.add(playerClass)));
-    };
 
     const playerToggle = () => {
         if (status === 'off') {
-            status = 'on'
+            return status = 'on';
         } else if (status === 'on') {
-            status = 'off';
+            return status = 'off';
         }
-        return {status};
     };
+
+    const displayController = (() => {
+        gridCells.forEach(cell => cell.addEventListener('click', (e) => {
+            console.log(status);
+            if (status === 'on') {
+                e.target.classList.add(playerClass)
+            }
+        }));
+
+        gridCells.forEach(cell => cell.addEventListener('click', (e) => {
+            if (status === 'on') {
+                cellsClaimed.push(e.target.id)
+            }
+        }));
+    })();
+
+    gridCells.forEach(cell => cell.addEventListener('click', () => {
+        playerToggle();
+    }
+    ));
 
     return { team, cellsClaimed };
 }
