@@ -39,11 +39,6 @@ const protoPlayer = (team, playerClass, status = 'off') => {
                 cellsClaimed.push(e.target.id);
             }
         }));
-
-        // gridCells.forEach(cell => cell.addEventListener('click', (e) => {
-        //     if (status === 'on') {
-        //     }
-        // }));
     })();
 
     gridCells.forEach(cell => cell.addEventListener('click', () => {
