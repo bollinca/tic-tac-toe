@@ -51,8 +51,14 @@ const protoPlayer = (team, playerClass, status = 'off') => {
 }
 
 const initialPlayers = (() => {
-    const playerX = protoPlayer('X', 'active-x', 'off');
-    const playerO = protoPlayer('O', 'active-o', 'on');
+    const playerX = protoPlayer('X', 'active-x', 'on');
+    const playerO = protoPlayer('O', 'active-o', 'off');
 
     return { playerX, playerO }
-})()
+})();
+
+const refreshAssignment = (() => {
+    const refreshPage = () => window.location.reload();
+    const clearButton = document.querySelector('#clear')
+    clearButton.addEventListener('click', refreshPage);
+})();
