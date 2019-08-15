@@ -13,3 +13,11 @@
     width: 100px;
     border: 1px black solid;
 }
+
+.active-x {
+    background-color: blue;
+}
+
+.active-o {
+    background-color: red;
+}
