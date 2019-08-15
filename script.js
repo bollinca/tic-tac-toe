@@ -33,17 +33,17 @@ const protoPlayer = (team, playerClass, status = 'off') => {
 
     const displayController = (() => {
         gridCells.forEach(cell => cell.addEventListener('click', (e) => {
-            console.log(status);
-            if (status === 'on') {
+            if (status === 'on' && !(e.target.classList.contains('claimed'))) {
                 e.target.classList.add(playerClass)
+                e.target.classList.add('claimed');
+                cellsClaimed.push(e.target.id);
             }
         }));
 
-        gridCells.forEach(cell => cell.addEventListener('click', (e) => {
-            if (status === 'on') {
-                cellsClaimed.push(e.target.id)
-            }
-        }));
+        // gridCells.forEach(cell => cell.addEventListener('click', (e) => {
+        //     if (status === 'on') {
+        //     }
+        // }));
     })();
 
     gridCells.forEach(cell => cell.addEventListener('click', () => {
@@ -53,10 +53,3 @@ const protoPlayer = (team, playerClass, status = 'off') => {
 
     return { team, cellsClaimed };
 }
-
-// const players
-// const playerEx
-
-// const playerOh
-
-// toggle between players on each click

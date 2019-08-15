@@ -18,6 +18,23 @@
     background-color: blue;
 }
 
+.active-x::before {
+    content: 'X';
+}
+
 .active-o {
     background-color: red;
+}
+
+.active-o::before {
+    content: 'O';
+}
+
+.claimed {
+    border: 10px rgb(217, 219, 217) groove;
+    text-align: center;
+    font-size: 60px;
+    font-weight: bold;
+    padding: 2px 0;
+    color: white;
 }
