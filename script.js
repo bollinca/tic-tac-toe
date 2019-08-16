@@ -78,26 +78,35 @@ const protoPlayer = (team, playerClass, status = 'off') => {
         }
     }
 
+    function clearGridListeners() {
+        const gridContainer = document.querySelector('.grid-container');
+        const gridClone = gridContainer.cloneNode(true);
+        gridContainer.parentNode.replaceChild(gridClone, gridContainer);
+    }
+
     const declareWinner = (() => {
         gridCells.forEach(cell => cell.addEventListener('click', (e) => {
+            const headline = document.querySelector('h1');
             if (cellsClaimed.length >= 3) {
                 for (let i = 1; i <= 3; i++) {
                     for (let j = 1; j <= 3; j++) {
                         if (checkVerticalVictory(i, j)) {
-                            console.log(`${team} victory`)
+                            clearGridListeners();
+                            headline.textContent = `Winner: Team ${team}!`
                         } else if (checkHorizontalVictory(i, j)) {
-                            console.log(`${team} victory`)
+                            clearGridListeners();
+                            headline.textContent = `Winner: Team ${team}!`
                         }
                     }
                 }
                 if (checkDiagonalVictory()) {
-                    console.log(`${team} victory`);
+                    headline.textContent = `Winner: Team ${team}!`
+                    clearGridListeners();
                 }
             }
         }));
     })();
-
-    return { team, cellsClaimed, };
+    return { team, cellsClaimed,};
 }
 
 const initialPlayers = (() => {
