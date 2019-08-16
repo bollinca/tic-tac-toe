@@ -1,21 +1,22 @@
 'use strict'
 
 const gameBoard = (() => {
-    const cellList = [];
-
     const renderBoard = ((cellNumber) => {
         for (let i = 0; i < cellNumber; i++) {
             let gridContainer = document.querySelector('.grid-container');
             let gridCell = document.createElement('div');
             gridCell.classList.add('grid-cell');
-            gridCell.setAttribute('id', `grid-cell-${i + 1}`)
-            gridContainer.appendChild(gridCell);
+            if (i < 3) {
+                gridCell.setAttribute('id', `x:${i + 1} y:3`)
+            } else if (i < 6) {
+                gridCell.setAttribute('id', `x:${i + 1 - 3} y:2`)
+            } else if (i < 9) {
+                gridCell.setAttribute('id', `x:${i + 1 - 6} y:1`)
+            }
 
-            cellList.push(`grid-cell-${i + 1}`);
+            gridContainer.appendChild(gridCell);
         }
     })(9);
-
-    return { cellList };
 })();
 
 
@@ -47,7 +48,36 @@ const protoPlayer = (team, playerClass, status = 'off') => {
     }
     ));
 
-    return { team, cellsClaimed };
+    const isWinner = (() => {
+        gridCells.forEach(cell => cell.addEventListener('click', (e) => {
+            if (cellsClaimed.length >= 3) {
+                for (let i = 1; i <= 3; i++) {
+                    for (let j = 1; j <= 3; j++) {
+                        if (cellsClaimed.toString().includes(`x:${i} y:${j}`)
+                            && cellsClaimed.toString().includes(`x:${i} y:${j + 1}`)
+                            && cellsClaimed.toString().includes(`x:${i} y:${j + 2}`)) {
+                            console.log(`${team} victory!`);
+                        } else if (cellsClaimed.toString().includes(`x:${i} y:${j}`)
+                            && cellsClaimed.toString().includes(`x:${i + 1} y:${j}`)
+                            && cellsClaimed.toString().includes(`x:${i + 2} y:${j}`)) {
+                            console.log(`${team} victory!`);
+                        }
+                    }
+                }
+                if (cellsClaimed.toString().includes(`x:${1} y:${1}`)
+                    && cellsClaimed.toString().includes(`x:${2} y:${2}`)
+                    && cellsClaimed.toString().includes(`x:${3} y:${3}`)) {
+                    console.log(`${team} victory!`);
+                } else if (cellsClaimed.toString().includes(`x:${1} y:${3}`)
+                    && cellsClaimed.toString().includes(`x:${2} y:${2}`)
+                    && cellsClaimed.toString().includes(`x:${3} y:${1}`)) {
+                    console.log(`${team} victory!`);
+                }
+            }
+        }));
+    })();
+
+    return { team, cellsClaimed, };
 }
 
 const initialPlayers = (() => {
