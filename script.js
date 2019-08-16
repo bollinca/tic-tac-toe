@@ -87,26 +87,30 @@ const protoPlayer = (team, playerClass, status = 'off') => {
     const declareWinner = (() => {
         gridCells.forEach(cell => cell.addEventListener('click', (e) => {
             const headline = document.querySelector('h1');
+            const MAX_MOVES = 5;
             if (cellsClaimed.length >= 3) {
                 for (let i = 1; i <= 3; i++) {
                     for (let j = 1; j <= 3; j++) {
                         if (checkVerticalVictory(i, j)) {
-                            clearGridListeners();
                             headline.textContent = `Winner: Team ${team}!`
+                            clearGridListeners();
                         } else if (checkHorizontalVictory(i, j)) {
-                            clearGridListeners();
                             headline.textContent = `Winner: Team ${team}!`
+                            clearGridListeners();
                         }
                     }
                 }
                 if (checkDiagonalVictory()) {
                     headline.textContent = `Winner: Team ${team}!`
                     clearGridListeners();
+                } else if (cellsClaimed.length === MAX_MOVES) {
+                    headline.textContent = 'It\'s a Tie!';
+                    clearGridListeners();
                 }
             }
         }));
     })();
-    return { team, cellsClaimed,};
+    return { team, cellsClaimed, };
 }
 
 const initialPlayers = (() => {
