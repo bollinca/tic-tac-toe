@@ -20,7 +20,7 @@ const gameBoard = (() => {
 })();
 
 
-const protoPlayer = (team, playerClass, status = 'off') => {
+const protoPlayer = (team, playerClass, status) => {
 
     const cellsClaimed = [];
     const gridCells = document.querySelectorAll('.grid-cell');
@@ -96,6 +96,9 @@ const protoPlayer = (team, playerClass, status = 'off') => {
                             clearGridListeners();
                         } else if (checkHorizontalVictory(i, j)) {
                             headline.textContent = `Winner: Team ${team}!`
+                            clearGridListeners();
+                        } else if (cellsClaimed.length === MAX_MOVES) {
+                            headline.textContent = 'It\'s a Tie!';
                             clearGridListeners();
                         }
                     }
