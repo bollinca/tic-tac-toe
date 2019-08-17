@@ -14,37 +14,35 @@ const playerList = (() => {
 const gameBoard = (() => {
     const gridCellArray = [];
 
-    const createBoard = ((totalCells) => {
-        for (let i = 1; i <= totalCells; i++) {
+    const createBoard = (() => {
+        const formGrid = ((totalCells) => {
+            for (let i = 1; i <= totalCells; i++) {
 
-            const gridCell = document.createElement('div');
-            gridCell.classList.add('grid-cell');
-            gridCell.setAttribute('id', `${i}`);
+                const gridCell = document.createElement('div');
+                gridCell.classList.add('grid-cell');
+                gridCell.setAttribute('id', `${i}`);
 
-            const gridContainer = document.querySelector('.grid-container');
-            gridContainer.appendChild(gridCell);
+                const gridContainer = document.querySelector('.grid-container');
+                gridContainer.appendChild(gridCell);
 
-            gridCellArray.push(gridCell);
-        }
-    })(9)
-
-    const addListeners = (() => {
-        gridCellArray.forEach(cell => cell.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('claimed')) {
-                console.log(gameState.playerXHasTurn);
-                e.target.classList.add('claimed');
-                if (gameState.playerXHasTurn === true) {
-                    e.target.classList.add('active-x');
-                } else {
-                    e.target.classList.add('active-o');
-                }
-                gameState.playerXHasTurn = !gameState.playerXHasTurn;
-
-                // if (gameState.playerTurn === 'X') {
-                // e.target.classList.add('active-x');
-                // }
+                gridCellArray.push(gridCell);
             }
-        }));
+        })(9);
+
+        const addListeners = (() => {
+            gridCellArray.forEach(cell => cell.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('claimed')) {
+                    console.log(gameState.playerXHasTurn);
+                    e.target.classList.add('claimed');
+                    if (gameState.playerXHasTurn === true) {
+                        e.target.classList.add('active-x');
+                    } else {
+                        e.target.classList.add('active-o');
+                    }
+                    gameState.playerXHasTurn = !gameState.playerXHasTurn;
+                }
+            }));
+        })();
     })();
 
     return { gridCellArray };
@@ -53,20 +51,27 @@ const gameBoard = (() => {
 const gameState = (() => {
     let matchComplete = false;
     let playerXHasTurn = true;
-    
-    const isBoardFull = (() => {
-        //return (9 cells claimed)
-    })()
-    
-    // const isGameOver = () => {
 
-    // };
+    const isBoardFull = () => {
+        return gameBoard.gridCellArray.every(cell => cell.classList.contains('claimed'));
+    };
 
     // const victoryConditions = (() => {
     //     const rowWin = [];
     //     const columnWin = [];
     //     const diagonalWin = [];
     // })();
+
+    const isGameOver = () => {
+        if (isBoardFull === true) {
+            return true;
+        } 
+        // else if () {
+        //     victory conditions met
+        //     return true
+        // }
+    };
+
 
     return { matchComplete, isBoardFull, playerXHasTurn };
 })();
