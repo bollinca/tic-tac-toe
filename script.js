@@ -28,10 +28,21 @@ const gameBoard = (() => {
         }
     })(9)
 
-    const addOnClick = (() => {
+    const addListeners = (() => {
         gridCellArray.forEach(cell => cell.addEventListener('click', (e) => {
             if (!e.target.classList.contains('claimed')) {
+                console.log(gameState.playerXHasTurn);
                 e.target.classList.add('claimed');
+                if (gameState.playerXHasTurn === true) {
+                    e.target.classList.add('active-x');
+                } else {
+                    e.target.classList.add('active-o');
+                }
+                gameState.playerXHasTurn = !gameState.playerXHasTurn;
+
+                // if (gameState.playerTurn === 'X') {
+                // e.target.classList.add('active-x');
+                // }
             }
         }));
     })();
@@ -41,15 +52,12 @@ const gameBoard = (() => {
 
 const gameState = (() => {
     let matchComplete = false;
-
+    let playerXHasTurn = true;
+    
     const isBoardFull = (() => {
         //return (9 cells claimed)
     })()
-
-    // const togglePlayerTurn = (() => {
-
-    // })();
-
+    
     // const isGameOver = () => {
 
     // };
@@ -60,7 +68,7 @@ const gameState = (() => {
     //     const diagonalWin = [];
     // })();
 
-    return { matchComplete, isBoardFull };
+    return { matchComplete, isBoardFull, playerXHasTurn };
 })();
 
 
