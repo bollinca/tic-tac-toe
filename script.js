@@ -1,8 +1,15 @@
 'use strict'
 
-const protoPlayer = (name, team) => {
-    return { name, team };
+const protoPlayer = (name, teamClass) => {
+    return { name, teamClass };
 };
+
+const playerList = (() => {
+    const playerOne = protoPlayer('X', 'teamX');
+    const playerTwo = protoPlayer('O', 'teamO');
+
+    return { playerOne, playerTwo };
+})();
 
 const gameBoard = (() => {
     const gridCellArray = [];
@@ -17,9 +24,17 @@ const gameBoard = (() => {
             const gridContainer = document.querySelector('.grid-container');
             gridContainer.appendChild(gridCell);
 
-            gridCellArray.push(gridCell.attributes.id);
+            gridCellArray.push(gridCell);
         }
     })(9)
+
+    const addOnClick = (() => {
+        gridCellArray.forEach(cell => cell.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('claimed')) {
+                e.target.classList.add('claimed');
+            }
+        }));
+    })();
 
     return { gridCellArray };
 })()
@@ -31,8 +46,23 @@ const gameState = (() => {
         //return (9 cells claimed)
     })()
 
+    // const togglePlayerTurn = (() => {
+
+    // })();
+
+    // const isGameOver = () => {
+
+    // };
+
+    // const victoryConditions = (() => {
+    //     const rowWin = [];
+    //     const columnWin = [];
+    //     const diagonalWin = [];
+    // })();
+
     return { matchComplete, isBoardFull };
 })();
+
 
 /*
 refactoring notes:
