@@ -21,6 +21,7 @@ const gameBoard = (() => {
                 const gridCell = document.createElement('div');
                 gridCell.classList.add('grid-cell');
                 gridCell.setAttribute('id', `${i}`);
+                setXYClasses(gridCell, i);
 
                 const gridContainer = document.querySelector('.grid-container');
                 gridContainer.appendChild(gridCell);
@@ -43,6 +44,25 @@ const gameBoard = (() => {
                 }
             }));
         })();
+
+        function setXYClasses(cell, i) {
+            if (i >= 6) {
+                cell.classList.add('row-1');
+            } else if (i >= 3) {
+                cell.classList.add('row-2');
+            } else if (i >= 1) {
+                cell.classList.add('row-3');
+            }
+
+            if (i % 3 === 1) {
+                cell.classList.add('column-1');
+            } else if (i % 3 === 2) {
+                cell.classList.add('column-2');
+            } else if (i % 3 === 0) {
+                cell.classList.add('column-3');
+            }
+        }
+
     })();
 
     return { gridCellArray };
@@ -65,7 +85,7 @@ const gameState = (() => {
     const isGameOver = () => {
         if (isBoardFull === true) {
             return true;
-        } 
+        }
         // else if () {
         //     victory conditions met
         //     return true
