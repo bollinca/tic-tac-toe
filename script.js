@@ -33,7 +33,6 @@ const gameBoard = (() => {
         const addListeners = (() => {
             gridCellArray.forEach(cell => cell.addEventListener('click', (e) => {
                 if (!e.target.classList.contains('claimed')) {
-                    console.log(gameState.playerXHasTurn);
                     e.target.classList.add('claimed');
                     if (gameState.playerXHasTurn === true) {
                         e.target.classList.add('active-x');
@@ -76,16 +75,43 @@ const gameState = (() => {
         return gameBoard.gridCellArray.every(cell => cell.classList.contains('claimed'));
     };
 
-    const checkVictory = (() => {
-        for (let i = 0; i < gameBoard.gridCellArray.length; i++) {
-            // console.log(gameBoard.gridCellArray[i]);
-            for (let j = 1; j <= 3; j++) {
-                if (gameBoard.gridCellArray[i].classList.contains(`row-${j}`)) {
-                    console.log(gameBoard.gridCellArray[i]);
+    const checkVictory = () => {
+
+        const checkRowVictory = (label, rowChoice) => {
+            let tempArray = [];
+            for (let i = 0; i < gameBoard.gridCellArray.length; i++) {
+                if (gameBoard.gridCellArray[i].classList.contains(`row-${rowChoice}`)
+                    && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
+                    tempArray.push(gameBoard.gridCellArray[i]);
                 }
             }
+            if (tempArray.length === 3) {
+                console.log('winner');
+            }
         }
-    })()
+
+
+        const checkColumnVictory = (label, columnChoice) => {
+            let tempArray = [];
+            for (let i = 0; i < gameBoard.gridCellArray.length; i++) {
+                if (gameBoard.gridCellArray[i].classList.contains(`column-${columnChoice}`)
+                    && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
+                    tempArray.push(gameBoard.gridCellArray[i]);
+                }
+            }
+            if (tempArray.length === 3) {
+                console.log('winner');
+            }
+        }
+
+        checkRowVictory('x', 1);
+        checkRowVictory('x', 2);
+        checkRowVictory('x', 3);
+        checkColumnVictory('x', 1);
+        checkColumnVictory('x', 2);
+        checkColumnVictory('x', 3);
+
+    }
 
     const isGameOver = () => {
         if (isBoardFull === true) {
@@ -97,6 +123,5 @@ const gameState = (() => {
         // }
     };
 
-
-    return { matchComplete, isBoardFull, playerXHasTurn };
+    return { checkVictory, matchComplete, isBoardFull, playerXHasTurn };
 })();
