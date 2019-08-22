@@ -46,9 +46,9 @@ const gameBoard = (() => {
         })();
 
         function setXYClasses(cell, i) {
-            if (i >= 6) {
+            if (i >= 7) {
                 cell.classList.add('row-1');
-            } else if (i >= 3) {
+            } else if (i >= 4) {
                 cell.classList.add('row-2');
             } else if (i >= 1) {
                 cell.classList.add('row-3');
@@ -76,11 +76,16 @@ const gameState = (() => {
         return gameBoard.gridCellArray.every(cell => cell.classList.contains('claimed'));
     };
 
-    // const victoryConditions = (() => {
-    //     const rowWin = [];
-    //     const columnWin = [];
-    //     const diagonalWin = [];
-    // })();
+    const checkVictory = (() => {
+        for (let i = 0; i < gameBoard.gridCellArray.length; i++) {
+            // console.log(gameBoard.gridCellArray[i]);
+            for (let j = 1; j <= 3; j++) {
+                if (gameBoard.gridCellArray[i].classList.contains(`row-${j}`)) {
+                    console.log(gameBoard.gridCellArray[i]);
+                }
+            }
+        }
+    })()
 
     const isGameOver = () => {
         if (isBoardFull === true) {
@@ -95,21 +100,3 @@ const gameState = (() => {
 
     return { matchComplete, isBoardFull, playerXHasTurn };
 })();
-
-
-/*
-refactoring notes:
-
-player should have:
- - name
- - team-assignment
-
-gameBoard should have:
- - cell array
- - display changes
-
-gameState should have:
- - player turn (previously 'status')
- - victory checks
-
-*/
