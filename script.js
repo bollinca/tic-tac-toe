@@ -1,10 +1,10 @@
 'use strict'
 
-const protoPlayer = (name, teamClass) => {
-    return { name, teamClass };
-};
-
 const playerList = (() => {
+    const protoPlayer = (name, teamClass) => {
+        return { name, teamClass };
+    };
+
     const playerOne = protoPlayer('X', 'teamX');
     const playerTwo = protoPlayer('O', 'teamO');
 
