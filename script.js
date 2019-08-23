@@ -77,7 +77,7 @@ const gameState = (() => {
 
     const checkVictory = () => {
 
-        const checkStraightVictory = (label, index, rowOrColumn) => {
+        const checkRowOrColumn = (label, index, rowOrColumn) => {
             let tempArray = [];
             for (let i = 0; i < gameBoard.gridCellArray.length; i++) {
                 if (gameBoard.gridCellArray[i].classList.contains(`${rowOrColumn}-${index}`)
@@ -86,11 +86,12 @@ const gameState = (() => {
                 }
                 if (tempArray.length === 3) {
                     console.log(`The winner is: ${label}`);
+                    return gameState.matchComplete = true;
                 }
             }
         }
 
-        const checkDiagonalVictory = (label) => {
+        const checkDiagonal = (label) => {
             let leftDiag = [];
             let rightDiag = [];
             const ROW_LENGTH = 3;
@@ -101,6 +102,7 @@ const gameState = (() => {
                 }
                 if (leftDiag.length === 3) {
                     console.log(`The winner is: ${label}`);
+                    return gameState.matchComplete = true;
                 }
             }
             for (let i = 0; i < (gameBoard.gridCellArray.length - (ROW_LENGTH - 1)); i += (ROW_LENGTH - 1)) {
@@ -109,31 +111,33 @@ const gameState = (() => {
                     rightDiag.push(gameBoard.gridCellArray[i]);
                     if (rightDiag.length === 3) {
                         console.log(`The winner is: ${label}`);
+                        return gameState.matchComplete = true;
                     }
                 }
             }
         }
 
         for (let j = 1; j <= 3; j++) {
-            checkStraightVictory('x', j, 'row');
-            checkStraightVictory('x', j, 'column');
-            checkStraightVictory('o', j, 'row');
-            checkStraightVictory('o', j, 'column');
+            checkRowOrColumn('x', j, 'row');
+            checkRowOrColumn('x', j, 'column');
+            checkRowOrColumn('o', j, 'row');
+            checkRowOrColumn('o', j, 'column');
         }
-        checkDiagonalVictory('x');
-        checkDiagonalVictory('o');
-
+        checkDiagonal('x');
+        checkDiagonal('o');
     }
 
     const isGameOver = () => {
-        if (isBoardFull === true) {
+        if (isBoardFull() === true) {
             return true;
         }
-        // else if () {
-        //     victory conditions met
-        //     return true
-        // }
+        else if (gameState.matchComplete === true) {
+            return true
+        }
+        else {
+            return false
+        };
     };
 
-    return { checkVictory, matchComplete, isBoardFull, playerXHasTurn };
+    return { checkVictory, isGameOver, playerXHasTurn };
 })();
