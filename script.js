@@ -77,39 +77,51 @@ const gameState = (() => {
 
     const checkVictory = () => {
 
-        const checkRowVictory = (label, rowChoice) => {
+        const checkStraightVictory = (label, index, rowOrColumn) => {
             let tempArray = [];
             for (let i = 0; i < gameBoard.gridCellArray.length; i++) {
-                if (gameBoard.gridCellArray[i].classList.contains(`row-${rowChoice}`)
+                if (gameBoard.gridCellArray[i].classList.contains(`${rowOrColumn}-${index}`)
                     && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
                     tempArray.push(gameBoard.gridCellArray[i]);
                 }
-            }
-            if (tempArray.length === 3) {
-                console.log('winner');
-            }
-        }
-
-
-        const checkColumnVictory = (label, columnChoice) => {
-            let tempArray = [];
-            for (let i = 0; i < gameBoard.gridCellArray.length; i++) {
-                if (gameBoard.gridCellArray[i].classList.contains(`column-${columnChoice}`)
-                    && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
-                    tempArray.push(gameBoard.gridCellArray[i]);
+                if (tempArray.length === 3) {
+                    console.log(`The winner is: ${label}`);
                 }
             }
-            if (tempArray.length === 3) {
-                console.log('winner');
+        }
+
+        const checkDiagonalVictory = (label) => {
+            let leftDiag = [];
+            let rightDiag = [];
+            const ROW_LENGTH = 3;
+            for (let i = 0; i < gameBoard.gridCellArray.length; i += (ROW_LENGTH + 1)) {
+                if (gameBoard.gridCellArray[i].id === `${i + 1}`
+                    && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
+                    leftDiag.push(gameBoard.gridCellArray[i]);
+                }
+                if (leftDiag.length === 3) {
+                    console.log(`The winner is: ${label}`);
+                }
+            }
+            for (let i = 0; i < (gameBoard.gridCellArray.length - (ROW_LENGTH - 1)); i += (ROW_LENGTH - 1)) {
+                if (gameBoard.gridCellArray[i].id === `${i + 1}`
+                    && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
+                    rightDiag.push(gameBoard.gridCellArray[i]);
+                    if (rightDiag.length === 3) {
+                        console.log(`The winner is: ${label}`);
+                    }
+                }
             }
         }
 
-        checkRowVictory('x', 1);
-        checkRowVictory('x', 2);
-        checkRowVictory('x', 3);
-        checkColumnVictory('x', 1);
-        checkColumnVictory('x', 2);
-        checkColumnVictory('x', 3);
+        for (let j = 1; j <= 3; j++) {
+            checkStraightVictory('x', j, 'row');
+            checkStraightVictory('x', j, 'column');
+            checkStraightVictory('o', j, 'row');
+            checkStraightVictory('o', j, 'column');
+        }
+        checkDiagonalVictory('x');
+        checkDiagonalVictory('o');
 
     }
 
