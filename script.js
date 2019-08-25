@@ -1,14 +1,14 @@
 'use strict'
 
-const playerList = (() => {
-    const protoPlayer = (name, teamClass) => {
-        return { name, teamClass };
+const pList = (() => {
+    const protoPlayer = (name, label) => {
+        return { name, label };
     };
 
-    const playerOne = protoPlayer('X', 'teamX');
-    const playerTwo = protoPlayer('O', 'teamO');
+    const pOne = protoPlayer('Player One', 'x');
+    const pTwo = protoPlayer('Player Two', 'o');
 
-    return { playerOne, playerTwo };
+    return { pOne, pTwo };
 })();
 
 const gameBoard = (() => {
@@ -44,6 +44,7 @@ const gameBoard = (() => {
                     }
                     gameState.playerXHasTurn = !gameState.playerXHasTurn;
                 }
+                gameState.checkVictory();
             }));
         })();
 
@@ -87,7 +88,7 @@ const gameState = (() => {
     const checkVictory = () => {
         let title = document.querySelector('h1');
 
-        const checkRowOrColumn = (label, index, rowOrColumn) => {
+        const checkRowOrColumn = (name, label, index, rowOrColumn,) => {
             let tempArray = [];
             for (let i = 0; i < gameBoard.gridCellArray.length; i++) {
                 if (gameBoard.gridCellArray[i].classList.contains(`${rowOrColumn}-${index}`)
@@ -95,27 +96,27 @@ const gameState = (() => {
                     tempArray.push(gameBoard.gridCellArray[i]);
                 }
                 if (tempArray.length === 3) {
-                    title.textContent = `The winner is: ${label}`;
+                    title.textContent = `The winner is: ${name}`;
                     gameState.matchComplete = true;
                 }
             }
         }
 
-        const checkDiagonal = (label) => {
+        const checkDiagonal = (name, label) => {
             let leftDiag = [];
             const ROW_LENGTH = 3;
-            
+
             for (let i = 0; i < gameBoard.gridCellArray.length; i += (ROW_LENGTH + 1)) {
                 if (gameBoard.gridCellArray[i].id === `${i}`
-                && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
+                    && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
                     leftDiag.push(gameBoard.gridCellArray[i]);
                 }
                 if (leftDiag.length === 3) {
-                    title.textContent = `The winner is: ${label}`;
+                    title.textContent = `The winner is: ${name}`;
                     gameState.matchComplete = true;
                 }
             }
-            
+
             let rightDiag = [];
             const TOP_RIGHT_CELL = 2;
             const BOTTOM_LEFT_CELL = 6;
@@ -124,7 +125,7 @@ const gameState = (() => {
                     && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
                     rightDiag.push(gameBoard.gridCellArray[i]);
                     if (rightDiag.length === 3) {
-                        title.textContent = `The winner is: ${label}`;
+                        title.textContent = `The winner is: ${name}`;
                         gameState.matchComplete = true;
                     }
                 }
@@ -132,13 +133,13 @@ const gameState = (() => {
         }
 
         for (let j = 1; j <= 3; j++) {
-            checkRowOrColumn('x', j, 'row');
-            checkRowOrColumn('x', j, 'column');
-            checkRowOrColumn('o', j, 'row');
-            checkRowOrColumn('o', j, 'column');
+            checkRowOrColumn(pList.pOne.name, pList.pOne.label, j, 'row');
+            checkRowOrColumn(pList.pOne.name, pList.pOne.label, j, 'column');
+            checkRowOrColumn(pList.pTwo.name, pList.pTwo.label, j, 'row');
+            checkRowOrColumn(pList.pTwo.name, pList.pTwo.label, j, 'column');
         }
-        checkDiagonal('x');
-        checkDiagonal('o');
+        checkDiagonal(pList.pOne.name, pList.pOne.label);
+        checkDiagonal(pList.pTwo.name, pList.pTwo.label);
         if (gameState.matchComplete === true) {
             console.log('gameOver');
             clearGridListeners();
