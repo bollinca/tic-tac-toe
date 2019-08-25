@@ -1,14 +1,21 @@
 'use strict'
 
+
 const pList = (() => {
     const protoPlayer = (name, label) => {
         return { name, label };
     };
 
+
     const pOne = protoPlayer('Player One', 'x');
     const pTwo = protoPlayer('Player Two', 'o');
 
-    return { pOne, pTwo };
+    const updatePList = () => {
+        pOne.name = document.querySelector('#player-one-name').value;
+        pTwo.name = document.querySelector('#player-two-name').value;
+    }
+
+    return { pOne, pTwo, updatePList };
 })();
 
 const gameBoard = (() => {
@@ -44,6 +51,7 @@ const gameBoard = (() => {
                     }
                     gameState.playerXHasTurn = !gameState.playerXHasTurn;
                 }
+                pList.updatePList();
                 gameState.checkVictory();
             }));
         })();
@@ -88,7 +96,7 @@ const gameState = (() => {
     const checkVictory = () => {
         let title = document.querySelector('h1');
 
-        const checkRowOrColumn = (name, label, index, rowOrColumn,) => {
+        const checkRowOrColumn = (name, label, index, rowOrColumn) => {
             let tempArray = [];
             for (let i = 0; i < gameBoard.gridCellArray.length; i++) {
                 if (gameBoard.gridCellArray[i].classList.contains(`${rowOrColumn}-${index}`)
@@ -141,11 +149,9 @@ const gameState = (() => {
         checkDiagonal(pList.pOne.name, pList.pOne.label);
         checkDiagonal(pList.pTwo.name, pList.pTwo.label);
         if (gameState.matchComplete === true) {
-            console.log('gameOver');
             clearGridListeners();
         } else if (isBoardFull() === true && matchComplete === false) {
             title.textContent = 'The game ended in a tie.';
-            console.log('tie');
         }
     }
 
