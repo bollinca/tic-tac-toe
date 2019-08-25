@@ -76,6 +76,7 @@ const gameState = (() => {
     };
 
     const checkVictory = () => {
+        let title = document.querySelector('h1');
 
         const checkRowOrColumn = (label, index, rowOrColumn) => {
             let tempArray = [];
@@ -85,8 +86,8 @@ const gameState = (() => {
                     tempArray.push(gameBoard.gridCellArray[i]);
                 }
                 if (tempArray.length === 3) {
-                    console.log(`The winner is: ${label}`);
-                    return gameState.matchComplete = true;
+                    title.textContent = `The winner is: ${label}`;
+                    gameState.matchComplete = true;
                 }
             }
         }
@@ -101,8 +102,8 @@ const gameState = (() => {
                     leftDiag.push(gameBoard.gridCellArray[i]);
                 }
                 if (leftDiag.length === 3) {
-                    console.log(`The winner is: ${label}`);
-                    return gameState.matchComplete = true;
+                    title.textContent = `The winner is: ${label}`;
+                    gameState.matchComplete = true;
                 }
             }
             for (let i = 0; i < (gameBoard.gridCellArray.length - (ROW_LENGTH - 1)); i += (ROW_LENGTH - 1)) {
@@ -110,8 +111,8 @@ const gameState = (() => {
                     && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
                     rightDiag.push(gameBoard.gridCellArray[i]);
                     if (rightDiag.length === 3) {
-                        console.log(`The winner is: ${label}`);
-                        return gameState.matchComplete = true;
+                        title.textContent = `The winner is: ${label}`;
+                        gameState.matchComplete = true;
                     }
                 }
             }
@@ -125,19 +126,13 @@ const gameState = (() => {
         }
         checkDiagonal('x');
         checkDiagonal('o');
+        if (gameState.matchComplete === true) {
+            console.log('gameOver');
+        } else if (isBoardFull() === true && matchComplete === false) {
+            title.textContent = 'The game ended in a tie.';
+            console.log('tie');
+        }
     }
 
-    const isGameOver = () => {
-        if (isBoardFull() === true) {
-            return true;
-        }
-        else if (gameState.matchComplete === true) {
-            return true
-        }
-        else {
-            return false
-        };
-    };
-
-    return { checkVictory, isGameOver, playerXHasTurn };
+    return { checkVictory, playerXHasTurn };
 })();
