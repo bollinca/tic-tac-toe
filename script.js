@@ -31,6 +31,9 @@ const gameBoard = (() => {
         })(9);
 
         const addListeners = (() => {
+            const clearButton = document.querySelector('button');
+            clearButton.addEventListener('click', () => location.reload());
+
             gridCellArray.forEach(cell => cell.addEventListener('click', (e) => {
                 if (!e.target.classList.contains('claimed')) {
                     e.target.classList.add('claimed');
@@ -75,6 +78,12 @@ const gameState = (() => {
         return gameBoard.gridCellArray.every(cell => cell.classList.contains('claimed'));
     };
 
+    const clearGridListeners = () => {
+        const gridContainer = document.querySelector('.grid-container');
+        const gridClone = gridContainer.cloneNode(true);
+        gridContainer.parentNode.replaceChild(gridClone, gridContainer);
+    };
+
     const checkVictory = () => {
         let title = document.querySelector('h1');
 
@@ -94,11 +103,11 @@ const gameState = (() => {
 
         const checkDiagonal = (label) => {
             let leftDiag = [];
-            let rightDiag = [];
             const ROW_LENGTH = 3;
+            
             for (let i = 0; i < gameBoard.gridCellArray.length; i += (ROW_LENGTH + 1)) {
                 if (gameBoard.gridCellArray[i].id === `${i}`
-                    && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
+                && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
                     leftDiag.push(gameBoard.gridCellArray[i]);
                 }
                 if (leftDiag.length === 3) {
@@ -106,12 +115,15 @@ const gameState = (() => {
                     gameState.matchComplete = true;
                 }
             }
-            for (let i = 2; i < (gameBoard.gridCellArray.length - (ROW_LENGTH - 1)); i += (ROW_LENGTH - 1)) {
+            
+            let rightDiag = [];
+            const TOP_RIGHT_CELL = 2;
+            const BOTTOM_LEFT_CELL = 6;
+            for (let i = TOP_RIGHT_CELL; i <= BOTTOM_LEFT_CELL; i += (ROW_LENGTH - 1)) {
                 if (gameBoard.gridCellArray[i].id === `${i}`
                     && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
                     rightDiag.push(gameBoard.gridCellArray[i]);
                     if (rightDiag.length === 3) {
-                        console.log(rightDiag);
                         title.textContent = `The winner is: ${label}`;
                         gameState.matchComplete = true;
                     }
@@ -129,6 +141,7 @@ const gameState = (() => {
         checkDiagonal('o');
         if (gameState.matchComplete === true) {
             console.log('gameOver');
+            clearGridListeners();
         } else if (isBoardFull() === true && matchComplete === false) {
             title.textContent = 'The game ended in a tie.';
             console.log('tie');
