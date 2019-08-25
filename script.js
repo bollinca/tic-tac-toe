@@ -16,7 +16,7 @@ const gameBoard = (() => {
 
     const createBoard = (() => {
         const formGrid = ((totalCells) => {
-            for (let i = 1; i <= totalCells; i++) {
+            for (let i = 0; i < totalCells; i++) {
 
                 const gridCell = document.createElement('div');
                 gridCell.classList.add('grid-cell');
@@ -45,19 +45,19 @@ const gameBoard = (() => {
         })();
 
         function setXYClasses(cell, i) {
-            if (i >= 7) {
+            if (i >= 6) {
                 cell.classList.add('row-1');
-            } else if (i >= 4) {
+            } else if (i >= 3) {
                 cell.classList.add('row-2');
-            } else if (i >= 1) {
+            } else if (i >= 0) {
                 cell.classList.add('row-3');
             }
 
-            if (i % 3 === 1) {
+            if (i % 3 === 0) {
                 cell.classList.add('column-1');
-            } else if (i % 3 === 2) {
+            } else if (i % 3 === 1) {
                 cell.classList.add('column-2');
-            } else if (i % 3 === 0) {
+            } else if (i % 3 === 2) {
                 cell.classList.add('column-3');
             }
         }
@@ -97,7 +97,7 @@ const gameState = (() => {
             let rightDiag = [];
             const ROW_LENGTH = 3;
             for (let i = 0; i < gameBoard.gridCellArray.length; i += (ROW_LENGTH + 1)) {
-                if (gameBoard.gridCellArray[i].id === `${i + 1}`
+                if (gameBoard.gridCellArray[i].id === `${i}`
                     && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
                     leftDiag.push(gameBoard.gridCellArray[i]);
                 }
@@ -106,11 +106,12 @@ const gameState = (() => {
                     gameState.matchComplete = true;
                 }
             }
-            for (let i = 0; i < (gameBoard.gridCellArray.length - (ROW_LENGTH - 1)); i += (ROW_LENGTH - 1)) {
-                if (gameBoard.gridCellArray[i].id === `${i + 1}`
+            for (let i = 2; i < (gameBoard.gridCellArray.length - (ROW_LENGTH - 1)); i += (ROW_LENGTH - 1)) {
+                if (gameBoard.gridCellArray[i].id === `${i}`
                     && gameBoard.gridCellArray[i].classList.contains(`active-${label}`)) {
                     rightDiag.push(gameBoard.gridCellArray[i]);
                     if (rightDiag.length === 3) {
+                        console.log(rightDiag);
                         title.textContent = `The winner is: ${label}`;
                         gameState.matchComplete = true;
                     }
