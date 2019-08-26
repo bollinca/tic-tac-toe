@@ -6,13 +6,18 @@ const pList = (() => {
         return { name, label };
     };
 
-
+    const computerSelect = document.querySelector('#computer-select');
+    computerSelect.addEventListener('click', () => updatePList());
     const pOne = protoPlayer('Player One', 'x');
     const pTwo = protoPlayer('Player Two', 'o');
 
     const updatePList = () => {
         pOne.name = document.querySelector('#player-one-name').value;
         pTwo.name = document.querySelector('#player-two-name').value;
+        if (computerSelect.checked === true) {
+            document.querySelector('#player-two-name').value = 'Computer';
+            pTwo.name = 'Computer';
+        } 
     }
 
     return { pOne, pTwo, updatePList };
