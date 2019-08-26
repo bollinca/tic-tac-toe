@@ -1,23 +1,23 @@
 'use strict'
 
-
 const pList = (() => {
     const protoPlayer = (name, label) => {
         return { name, label };
     };
 
     const computerSelect = document.querySelector('#computer-select');
-    computerSelect.addEventListener('click', () => updatePList());
+    computerSelect.addEventListener('click', () => {
+        if (computerSelect.checked === true) {
+            document.querySelector('#player-two-name').value = 'Computer';
+            pTwo.name = 'Computer';
+        }
+    });
     const pOne = protoPlayer('Player One', 'x');
     const pTwo = protoPlayer('Player Two', 'o');
 
     const updatePList = () => {
         pOne.name = document.querySelector('#player-one-name').value;
         pTwo.name = document.querySelector('#player-two-name').value;
-        if (computerSelect.checked === true) {
-            document.querySelector('#player-two-name').value = 'Computer';
-            pTwo.name = 'Computer';
-        } 
     }
 
     return { pOne, pTwo, updatePList };
@@ -25,6 +25,7 @@ const pList = (() => {
 
 const gameBoard = (() => {
     const gridCellArray = [];
+    const computerSelect = document.querySelector('#computer-select');
 
     const createBoard = (() => {
         const formGrid = ((totalCells) => {
@@ -81,7 +82,13 @@ const gameBoard = (() => {
 
     })();
 
-    return { gridCellArray };
+    const computerTurn = () => {
+        let randomCellId = Math.floor(Math.random() * 9);
+        let cellToClick = document.getElementById(`${randomCellId}`);
+        cellToClick.click();
+    }
+
+    return { gridCellArray, computerTurn };
 })()
 
 const gameState = (() => {
