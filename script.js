@@ -50,7 +50,7 @@ const gameBoard = (() => {
             gridCellArray.forEach(cell => cell.addEventListener('click', (e) => {
                 if (!e.target.classList.contains('claimed')) {
                     e.target.classList.add('claimed');
-                    if (gameState.playerXHasTurn === true) {
+                    if (gameState.playerXHasTurn) {
                         e.target.classList.add('active-x');
                     } else {
                         e.target.classList.add('active-o');
@@ -59,6 +59,10 @@ const gameBoard = (() => {
                 }
                 pList.updatePList();
                 gameState.checkVictory();
+
+                if (!gameState.playerXHasTurn && !gameState.matchComplete && computerSelect.checked) {
+                    computerTurn();
+                }
             }));
         })();
 
@@ -83,9 +87,15 @@ const gameBoard = (() => {
     })();
 
     const computerTurn = () => {
-        let randomCellId = Math.floor(Math.random() * 9);
-        let cellToClick = document.getElementById(`${randomCellId}`);
-        cellToClick.click();
+        let cellToClick;
+        do {
+            let randomCellId = Math.floor(Math.random() * 9);
+            cellToClick = document.getElementById(`${randomCellId}`);
+        } while (cellToClick.classList.contains('claimed'));
+            window.setTimeout(function() {
+                cellToClick.click()
+            }, 200);
+        delayClick();
     }
 
     return { gridCellArray, computerTurn };
@@ -167,5 +177,5 @@ const gameState = (() => {
         }
     }
 
-    return { checkVictory, playerXHasTurn };
+    return { checkVictory, playerXHasTurn, matchComplete };
 })();
