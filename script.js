@@ -11,6 +11,9 @@ const pList = (() => {
             document.querySelector('#player-two-name').value = 'Computer';
             pTwo.name = 'Computer';
         }
+        if (computerSelect.checked && !gameState.playerXHasTurn) {
+            gameBoard.computerTurn();
+        }
     });
     const pOne = protoPlayer('Player One', 'x');
     const pTwo = protoPlayer('Player Two', 'o');
