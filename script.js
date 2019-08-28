@@ -7,7 +7,7 @@ const pList = (() => {
 
     const computerSelect = document.querySelector('#computer-select');
     computerSelect.addEventListener('click', () => {
-        if (computerSelect.checked === true) {
+        if (computerSelect.checked) {
             document.querySelector('#player-two-name').value = 'Computer';
             pTwo.name = 'Computer';
         }
@@ -15,6 +15,7 @@ const pList = (() => {
             gameBoard.computerTurn();
         }
     });
+
     const pOne = protoPlayer('Player One', 'x');
     const pTwo = protoPlayer('Player Two', 'o');
 
@@ -22,7 +23,6 @@ const pList = (() => {
         pOne.name = document.querySelector('#player-one-name').value;
         pTwo.name = document.querySelector('#player-two-name').value;
     }
-
     return { pOne, pTwo, updatePList };
 })();
 
@@ -86,7 +86,6 @@ const gameBoard = (() => {
                 cell.classList.add('column-3');
             }
         }
-
     })();
 
     const computerTurn = () => {
@@ -99,10 +98,8 @@ const gameBoard = (() => {
             let randomCellId = Math.floor(Math.random() * 9);
             cellToClick = document.getElementById(`${randomCellId}`);
         } while (cellToClick.classList.contains('claimed'));
-        
         delayClick();
     }
-
     return { gridCellArray, computerTurn };
 })()
 
@@ -164,7 +161,6 @@ const gameState = (() => {
             }
         }
     }
-
     const checkVictory = () => {
         for (let j = 1; j <= 3; j++) {
             checkRowOrColumn(pList.pOne.name, pList.pOne.label, j, 'row');
@@ -178,10 +174,9 @@ const gameState = (() => {
             gameState.matchComplete = true;
             title.textContent = 'The game ended in a tie.';
         }
-        if (gameState.matchComplete === true) {
+        if (gameState.matchComplete) {
             clearGridListeners();
         }
     }
-
     return { checkVictory, playerXHasTurn, matchComplete };
 })();
